@@ -1,0 +1,14 @@
+---
+title: "International Foods"
+author: "Kevin Havis"
+format: html
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+df <- read.csv("data/food-world-cup-data.csv", check.names = FALSE)
+```
+
