@@ -1,0 +1,125 @@
+---
+title: DATA 606 Data Project Proposal
+author: 
+---
+
+### Data Preparation
+
+```{r setup, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+source("load_data.R")
+```
+
+
+### Research question 
+
+1. Do U.S. adults with higher income prefer different cuisines?
+
+2. Do better educated U.S. adults prefer different cuisines?
+
+3. Is a diverse preference of ethnic foods predicted by age amongst U.S. adults?
+
+4. Do male and female U.S. adults have different preferences of cuisine?
+
+
+
+### Cases 
+
+The cases in this dataset are 1,373 U.S. adults.
+
+
+
+### Data collection 
+
+The data was collected by sending a voluntary online survey to collect responses on how respondents felt about native foods from different countries.
+
+
+
+### Type of study 
+
+This is an observational study.
+
+
+
+### Data Source 
+
+The survey and data were collected by FiveThirtyEight and referenced in their article [The FiveThirtyEight International Food Association's 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/)
+
+
+
+
+### Describe your variables?
+
+The main variables of interest;
+
+- `knowledge_cuisines`: Indicates how knowledgeable the respondent finds themselves from `Novice`, `Intermediate`, and `Advanced`
+- `interest_cuisines` Indicates how interest in foreign cuisines the respondent finds themselves, rated 1-5 with 5 being the most interested
+- `gender` The respondents gender, male or female
+- `age` The age of the respondent, binned as 18-29, 30-44, 45-60, and 60+
+- `household_income` The household income of the respondent, binned into 0-24k, 25k-49k, 50k-99k, 100k-150k, and 150k+
+- `education` The highest level of education the respondent has obtained, described as "Less than a high school degree", "high school degree", "Some college or Associate degree", "bachelor degree", or "graduate degree"
+- `location` The geographic area of the U.S. the respondent lives in, including "West South Central", "Pacific", "New England", "East North Central", "South Atlantic", "Mountain","Middle Atlantic", "East South Central", and "West North Central"
+- `country` Countries the respondents were asked about. 
+- `country_rating` The rating each respondent gave to the food native to the `country`. The question was presented as "Please rate how much you like the traditional cuisine of X", which respondents were directed to respond to per the below rubric.
+
+Value | Description
+------|--------------
+5 | I love this country's traditional cuisine. I think it's one of the best in the world.
+4 | I like this country's traditional cuisine. I think it's considerably above average.
+3 | I'm OK with this county's traditional cuisine. I think it's about average.
+2 | I dislike this country's traditional cuisine. I think it's considerably below average.
+1 | I hate this country's traditional cuisine. I think it's one of the worst in the world.
+N/A | I'm unfamiliar with this country's traditional cuisine.
+
+
+**If you are are running a regression or similar model, which one is your dependent variable?**
+
+
+### Relevant summary statistics 
+
+**Provide summary statistics for each the variables. Also include appropriate visualizations related to your research question (e.g. scatter plot, boxplots, etc). This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
+
+```{r}
+# convert countries to long format
+long_data <- data |> 
+  pivot_longer(4:43, names_to = "country", values_to = "country_rating")
+```
+
+```{r}
+long_data |> 
+  group_by(country, country_rating) |> 
+  summarize(count = n())
+```
+
+
+```{r}
+
+# convert countries to long format
+long_data <- data |> 
+  pivot_longer(4:43, names_to = "country", values_to = "country_rating")
+  
+ggplot(long_data, aes(x=country, y = country_rating)) +
+  geom_jitter() + coord_flip()
+```
+
+```{r}
+data_prop <- long_data |> 
+  mutate(is_na = ifelse(is.na(country_rating), "NA", "Non-NA")) |> 
+  count(country, is_na) |> 
+  group_by(country) |> 
+  mutate(prop = n / sum(n))
+
+# Plot proportions using ggplot
+ggplot(data_prop, aes(x = country, y = prop, fill = is_na)) +
+  geom_bar(stat = "identity", position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Proportion of NA vs Non-NA Values by Country",
+    x = "Country",
+    y = "Proportion",
+    fill = "Country Rating"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_flip()
+```
+
