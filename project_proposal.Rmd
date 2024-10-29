@@ -78,6 +78,8 @@ N/A | I'm unfamiliar with this country's traditional cuisine.
 
 **Provide summary statistics for each the variables. Also include appropriate visualizations related to your research question (e.g. scatter plot, boxplots, etc). This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
 
+#### Country ratings
+
 ```{r}
 # convert countries to long format
 long_data <- data |> 
@@ -86,7 +88,8 @@ long_data <- data |>
 
 ```{r}
 long_data |> 
-  group_by(country, country_rating) |> 
+  mutate(missing = is.na(country_rating)) |> 
+  group_by(country, missing) |> 
   summarize(count = n())
 ```
 
@@ -101,12 +104,14 @@ ggplot(long_data, aes(x=country, y = country_rating)) +
   geom_jitter() + coord_flip()
 ```
 
+Ivory Coast, Cameroon, and Ghana have proportions close to 10%, so may need to remove them from analysis.
+
 ```{r}
 data_prop <- long_data |> 
   mutate(is_na = ifelse(is.na(country_rating), "NA", "Non-NA")) |> 
   count(country, is_na) |> 
   group_by(country) |> 
-  mutate(prop = n / sum(n))
+  mutate(prop = n / sum(n()))
 
 # Plot proportions using ggplot
 ggplot(data_prop, aes(x = country, y = prop, fill = is_na)) +
@@ -121,5 +126,42 @@ ggplot(data_prop, aes(x = country, y = prop, fill = is_na)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   coord_flip()
+```
+
+```{r}
+data_prop |> 
+  filter(country %in%(c('ivory_coast', 'ghana', 'cameroon')))
+```
+#### Respondent data
+
+```{r}
+display_prop_for_col <- function(x_col) {
+  long_data |> 
+  group_by({{ x_col }}) |> 
+  summarize(prop = n() / nrow(long_data))
+}
+```
+
+```{r}
+display_prop_for_col(gender)
+```
+
+```{r}
+display_prop_for_col(knowledge_cuisines)
+```
+
+```{r}
+display_prop_for_col(interest_cuisines)
+```
+
+```{r}
+display_prop_for_col(age)
+```
+
+```{r}
+display_prop_for_col(household_income)
+```
+```{r}
+display_prop_for_col(location)
 ```
 
