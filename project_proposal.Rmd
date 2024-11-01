@@ -10,15 +10,13 @@ source("load_data.R")
 ```
 
 
-### Research question 
+### Research questions
 
-1. Do U.S. adults with higher income prefer different cuisines?
+1. Do better educated U.S. adults prefer different cuisines?
 
-2. Do better educated U.S. adults prefer different cuisines?
+2. Do different generations (age groups) have different preferences of ethnic foods?
 
-3. Is a diverse preference of ethnic foods predicted by age amongst U.S. adults?
-
-4. Do male and female U.S. adults have different preferences of cuisine?
+3. Do male and female U.S. adults have different preferences of cuisine?
 
 
 
@@ -80,33 +78,29 @@ N/A | I'm unfamiliar with this country's traditional cuisine.
 
 #### Country ratings
 
+We will need to check if we have the right data to answer these questions.
+
 ```{r}
 # convert countries to long format
 long_data <- data |> 
   pivot_longer(4:43, names_to = "country", values_to = "country_rating")
 ```
 
+The rating data is relatively well distributed across countries. Ivory Coast, Cameroon, and Ghana have very low non-na proportions, so may need to remove them from analysis. 
+
 ```{r}
-long_data |> 
-  mutate(missing = is.na(country_rating)) |> 
-  group_by(country, missing) |> 
-  summarize(count = n())
+ggplot(long_data, aes(x=country_rating)) +
+  geom_histogram()
 ```
 
 
-```{r}
-
-# convert countries to long format
-long_data <- data |> 
-  pivot_longer(4:43, names_to = "country", values_to = "country_rating")
-  
+```{r, warnings=FALSE, collapse=TRUE}
+# Show high level distribution of ratings and countries
 ggplot(long_data, aes(x=country, y = country_rating)) +
   geom_jitter() + coord_flip()
 ```
 
-Ivory Coast, Cameroon, and Ghana have proportions close to 10%, so may need to remove them from analysis.
-
-```{r}
+```{r, collapse=TRUE}
 data_prop <- long_data |> 
   mutate(is_na = ifelse(is.na(country_rating), "NA", "Non-NA")) |> 
   count(country, is_na) |> 
@@ -129,10 +123,13 @@ ggplot(data_prop, aes(x = country, y = prop, fill = is_na)) +
 ```
 
 ```{r}
+# Check proportions of countries with high nulls
 data_prop |> 
   filter(country %in%(c('ivory_coast', 'ghana', 'cameroon')))
 ```
 #### Respondent data
+
+Respondent data is relatively well distributed as well, with the exception of income; there's a decent gap in the data so we will not use this for our analysis.
 
 ```{r}
 display_prop_for_col <- function(x_col) {
@@ -142,9 +139,13 @@ display_prop_for_col <- function(x_col) {
 }
 ```
 
+Gender data has nulls that could either represent non-binary responses or simply gaps in the analysis. Unfortunately, since we cannot be sure of either, we will exclude nulls from our analysis.
+
 ```{r}
 display_prop_for_col(gender)
 ```
+
+Cuisine knowledge and interest are skewed, but usable. The analysis would definitely need to account for group size if we were to use these dimensions.
 
 ```{r}
 display_prop_for_col(knowledge_cuisines)
@@ -154,13 +155,18 @@ display_prop_for_col(knowledge_cuisines)
 display_prop_for_col(interest_cuisines)
 ```
 
+Age has a good assortment, and could easily approximated to generations. We are unfortunately missing about 10% of ages, which we cannot easily impute, so we will discard.
+
 ```{r}
 display_prop_for_col(age)
 ```
+As mentioned, 30% of income data is missing, so we are not planning to use in the analysis.
 
 ```{r}
 display_prop_for_col(household_income)
 ```
+Location of the resopndents should be usable, and we may explore that if we have time.
+
 ```{r}
 display_prop_for_col(location)
 ```
