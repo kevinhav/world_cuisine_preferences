@@ -1,80 +1,68 @@
 ---
 title: DATA 606 Data Project Proposal
-author: 
+author: Kevin Havis
 ---
 
 ### Data Preparation
+
+Our data comes from [FiveThirtyEight's International Food Association's 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/). Food World Cup survey in 2014. The data contains survey responses of U.S. adults, asking them about their general familiarity and preference for the native foods from different countries. Each respondent rated each country's native food based on how much they enjoy it. Respondents also provided some demographic information on themselves.
 
 ```{r setup, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 source("load_data.R")
 ```
 
-
 ### Research questions
 
-1. Do better educated U.S. adults prefer different cuisines?
+I plan to answer the below questions using chi-squared and difference in means tests; chi-squared for multinomial categorical tests (such as different age groups), and proportion tests for binomial tests (such as gender).
 
-2. Do different generations (age groups) have different preferences of ethnic foods?
+I expect to first calculate the mean ratings across countries and per country
 
-3. Do male and female U.S. adults have different preferences of cuisine?
+1.  Do better educated U.S. adults prefer different cuisines?
 
+2.  Do different generations (age groups) have different preferences of cuisines?
 
+3.  Do male and female U.S. adults have different preferences of cuisine?
 
-### Cases 
+### Cases
 
-The cases in this dataset are 1,373 U.S. adults.
+The cases in this dataset are 1,373 U.S. adults who responded to the survey.
 
+### Data collection
 
+The data was collected by sending a voluntary online survey to readers of FiveThirtyEight and monitoring responses.
 
-### Data collection 
-
-The data was collected by sending a voluntary online survey to collect responses on how respondents felt about native foods from different countries.
-
-
-
-### Type of study 
+### Type of study
 
 This is an observational study.
 
-
-
-### Data Source 
+### Data Source
 
 The survey and data were collected by FiveThirtyEight and referenced in their article [The FiveThirtyEight International Food Association's 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/)
 
-
-
-
-### Describe your variables?
+### Describe your variables
 
 The main variables of interest;
 
-- `knowledge_cuisines`: Indicates how knowledgeable the respondent finds themselves from `Novice`, `Intermediate`, and `Advanced`
-- `interest_cuisines` Indicates how interest in foreign cuisines the respondent finds themselves, rated 1-5 with 5 being the most interested
-- `gender` The respondents gender, male or female
-- `age` The age of the respondent, binned as 18-29, 30-44, 45-60, and 60+
-- `household_income` The household income of the respondent, binned into 0-24k, 25k-49k, 50k-99k, 100k-150k, and 150k+
-- `education` The highest level of education the respondent has obtained, described as "Less than a high school degree", "high school degree", "Some college or Associate degree", "bachelor degree", or "graduate degree"
-- `location` The geographic area of the U.S. the respondent lives in, including "West South Central", "Pacific", "New England", "East North Central", "South Atlantic", "Mountain","Middle Atlantic", "East South Central", and "West North Central"
-- `country` Countries the respondents were asked about. 
-- `country_rating` The rating each respondent gave to the food native to the `country`. The question was presented as "Please rate how much you like the traditional cuisine of X", which respondents were directed to respond to per the below rubric.
+-   `knowledge_cuisines`: Indicates how knowledgeable the respondent finds themselves from `Novice`, `Intermediate`, and `Advanced`
+-   `interest_cuisines` Indicates how interest in foreign cuisines the respondent finds themselves, rated 1-5 with 5 being the most interested
+-   `gender` The respondents gender, male or female
+-   `age` The age of the respondent, binned as 18-29, 30-44, 45-60, and 60+
+-   `household_income` The household income of the respondent, binned into 0-24k, 25k-49k, 50k-99k, 100k-150k, and 150k+
+-   `education` The highest level of education the respondent has obtained, described as "Less than a high school degree", "high school degree", "Some college or Associate degree", "bachelor degree", or "graduate degree"
+-   `location` The geographic area of the U.S. the respondent lives in, including "West South Central", "Pacific", "New England", "East North Central", "South Atlantic", "Mountain","Middle Atlantic", "East South Central", and "West North Central"
+-   `country` Countries the respondents were asked about.
+-   `country_rating` The rating each respondent gave to the food native to the `country`. The question was presented as "Please rate how much you like the traditional cuisine of X", which respondents were directed to respond to per the below rubric.
 
-Value | Description
-------|--------------
-5 | I love this country's traditional cuisine. I think it's one of the best in the world.
-4 | I like this country's traditional cuisine. I think it's considerably above average.
-3 | I'm OK with this county's traditional cuisine. I think it's about average.
-2 | I dislike this country's traditional cuisine. I think it's considerably below average.
-1 | I hate this country's traditional cuisine. I think it's one of the worst in the world.
-N/A | I'm unfamiliar with this country's traditional cuisine.
+| Value | Description |
+|-----------------------|------------------------------------------------|
+| 5 | I love this country's traditional cuisine. I think it's one of the best in the world. |
+| 4 | I like this country's traditional cuisine. I think it's considerably above average. |
+| 3 | I'm OK with this county's traditional cuisine. I think it's about average. |
+| 2 | I dislike this country's traditional cuisine. I think it's considerably below average. |
+| 1 | I hate this country's traditional cuisine. I think it's one of the worst in the world. |
+| N/A | I'm unfamiliar with this country's traditional cuisine. |
 
-
-**If you are are running a regression or similar model, which one is your dependent variable?**
-
-
-### Relevant summary statistics 
-
-**Provide summary statistics for each the variables. Also include appropriate visualizations related to your research question (e.g. scatter plot, boxplots, etc). This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
+### Relevant summary statistics
 
 #### Country ratings
 
@@ -86,13 +74,12 @@ long_data <- data |>
   pivot_longer(4:43, names_to = "country", values_to = "country_rating")
 ```
 
-The rating data is relatively well distributed across countries. Ivory Coast, Cameroon, and Ghana have very low non-na proportions, so may need to remove them from analysis. 
+The rating data is relatively well distributed across countries. Ivory Coast, Cameroon, and Ghana have very low non-na proportions, so may need to remove them from analysis.
 
 ```{r}
 ggplot(long_data, aes(x=country_rating)) +
   geom_histogram()
 ```
-
 
 ```{r, warnings=FALSE, collapse=TRUE}
 # Show high level distribution of ratings and countries
@@ -127,6 +114,7 @@ ggplot(data_prop, aes(x = country, y = prop, fill = is_na)) +
 data_prop |> 
   filter(country %in%(c('ivory_coast', 'ghana', 'cameroon')))
 ```
+
 #### Respondent data
 
 Respondent data is relatively well distributed as well, with the exception of income; there's a decent gap in the data so we will not use this for our analysis.
@@ -160,14 +148,15 @@ Age has a good assortment, and could easily approximated to generations. We are 
 ```{r}
 display_prop_for_col(age)
 ```
+
 As mentioned, 30% of income data is missing, so we are not planning to use in the analysis.
 
 ```{r}
 display_prop_for_col(household_income)
 ```
-Location of the resopndents should be usable, and we may explore that if we have time.
+
+Location of the respondents should be usable, and we may explore that if we have time.
 
 ```{r}
 display_prop_for_col(location)
 ```
-
