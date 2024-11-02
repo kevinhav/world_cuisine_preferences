@@ -15,7 +15,6 @@ source("load_data.R")
 
 I plan to answer the below questions using chi-squared and difference in means tests; chi-squared for multinomial categorical tests (such as different age groups), and proportion tests for binomial tests (such as gender).
 
-I expect to first calculate the mean ratings across countries and per country
 
 1.  Do better educated U.S. adults prefer different cuisines?
 
@@ -92,7 +91,7 @@ data_prop <- long_data |>
   mutate(is_na = ifelse(is.na(country_rating), "NA", "Non-NA")) |> 
   count(country, is_na) |> 
   group_by(country) |> 
-  mutate(prop = n / sum(n()))
+  mutate(prop = n / sum(n))
 
 # Plot proportions using ggplot
 ggplot(data_prop, aes(x = country, y = prop, fill = is_na)) +
@@ -127,11 +126,16 @@ display_prop_for_col <- function(x_col) {
 }
 ```
 
+
+##### Gender
+
 Gender data has nulls that could either represent non-binary responses or simply gaps in the analysis. Unfortunately, since we cannot be sure of either, we will exclude nulls from our analysis.
 
 ```{r}
 display_prop_for_col(gender)
 ```
+
+##### Cuisine Knowledge
 
 Cuisine knowledge and interest are skewed, but usable. The analysis would definitely need to account for group size if we were to use these dimensions.
 
@@ -143,11 +147,15 @@ display_prop_for_col(knowledge_cuisines)
 display_prop_for_col(interest_cuisines)
 ```
 
+##### Age
+
 Age has a good assortment, and could easily approximated to generations. We are unfortunately missing about 10% of ages, which we cannot easily impute, so we will discard.
 
 ```{r}
 display_prop_for_col(age)
 ```
+
+##### Income
 
 As mentioned, 30% of income data is missing, so we are not planning to use in the analysis.
 
@@ -155,6 +163,7 @@ As mentioned, 30% of income data is missing, so we are not planning to use in th
 display_prop_for_col(household_income)
 ```
 
+##### Location
 Location of the respondents should be usable, and we may explore that if we have time.
 
 ```{r}
