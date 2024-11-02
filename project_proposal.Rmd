@@ -1,6 +1,7 @@
 ---
-title: DATA 606 Data Project Proposal
-author: Kevin Havis
+title: "DATA 606 Data Project Proposal"
+author: "Kevin Havis"
+output: pdf_document
 ---
 
 ### Data Preparation
