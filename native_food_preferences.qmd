@@ -1,0 +1,55 @@
+---
+title: "native_food_preferences"
+author: "Kevin Havis"
+format: html
+---
+
+```{r}
+source('load_data.R')
+```
+
+1.  Do better educated U.S. adults have greater knowledge of food cuisines?
+
+Independent variable = `education`
+
+Dependent variable = `knowledge_cuisines`
+
+Analysis method: ANOVA
+
+
+
+```{r}
+# Calculate descriptive statistics
+prop.table(table(data$education, data$knowledge_cuisines))
+
+data %>%
+  drop_na(education, knowledge_cuisines) |> 
+  count(education, knowledge_cuisines) %>%
+  group_by(education, knowledge_cuisines) %>%
+  mutate(prop = n/sum(n)) %>%
+  ungroup()
+
+data %>%
+  select(education, knowledge_cuisines) |> 
+  drop_na(education, knowledge_cuisines) %>%
+  count(education, knowledge_cuisines) %>%
+  group_by(education) %>%
+  mutate(prop = n/sum(n)) %>%
+  ungroup()
+```
+
+
+
+2.  Do different generations (age groups) have different preferences of cuisines?
+
+ANOVA across cuisines 
+
+
+
+3.  What cuisines do women prefer compared to men?
+
+Difference in means for each country, divided by gender
+
+
+
+

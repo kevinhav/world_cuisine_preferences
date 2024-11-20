@@ -73,6 +73,9 @@ main <- function(){
       TRUE ~ NA
     ))
 
+# fill empty strings with NA
+  df <- df |> 
+    mutate(across(where(is.character), ~ na_if(.,"")))
   
   return(df)
 }
