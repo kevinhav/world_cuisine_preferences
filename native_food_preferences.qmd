@@ -8,48 +8,66 @@ format: html
 source('load_data.R')
 ```
 
-1.  Do better educated U.S. adults have greater knowledge of food cuisines?
 
-Independent variable = `education`
+ What cuisines do women prefer compared to men?
 
-Dependent variable = `knowledge_cuisines`
-
-Analysis method: ANOVA
-
-
+1. Calculate overall mean rating per country
+2. Calculate mean per country by gender
+3. Compare differences in two means
 
 ```{r}
-# Calculate descriptive statistics
-prop.table(table(data$education, data$knowledge_cuisines))
+# Convert to long form data
+long_data <- data |> 
+  pivot_longer(cols = algeria:ireland, names_to = "country", values_to = "rating")
+```
 
-data %>%
-  drop_na(education, knowledge_cuisines) |> 
-  count(education, knowledge_cuisines) %>%
-  group_by(education, knowledge_cuisines) %>%
-  mutate(prop = n/sum(n)) %>%
-  ungroup()
-
-data %>%
-  select(education, knowledge_cuisines) |> 
-  drop_na(education, knowledge_cuisines) %>%
-  count(education, knowledge_cuisines) %>%
-  group_by(education) %>%
-  mutate(prop = n/sum(n)) %>%
-  ungroup()
+```{r}
+# Calculate overall rating means per country
+long_data |> 
+  drop_na(gender) |> 
+  group_by(country) |> 
+  summarize(mean_rtg = mean(rating, na.rm = TRUE))
+```
+```{r}
+ggplot(long_data, aes(x=rating)) +
+  geom_histogram() +
+  facet_wrap(~gender)
 ```
 
 
+```{r}
+# Calculate overall rating means per country for men
+men_rtg <- long_data |> 
+  filter(gender == "Male") |> 
+  group_by(country) |> 
+  summarize(mean_rtg = mean(rating, na.rm = TRUE))
+```
 
-2.  Do different generations (age groups) have different preferences of cuisines?
+```{r}
+# Calculate overall rating means per country for women
+women_rtg <- long_data |> 
+  filter(gender == "Female") |> 
+  group_by(country) |> 
+  summarize(mean_rtg = mean(rating, na.rm = TRUE))
+```
 
-ANOVA across cuisines 
+```{r}
+# Plot mens ratings vs women's ratings
 
+ggplot() +
+  geom_histogram(data = men_rtg, aes(x=mean_rtg), fill = 'blue', alpha = 0.8) +
+  geom_histogram(data = women_rtg, aes(x=mean_rtg), fill ='red', alpha = 0.8)
 
+```
+```{r}
+anova_results <- aov(rating ~ gender + country, data = long_data)
 
-3.  What cuisines do women prefer compared to men?
+summary(anova_results)
+```
 
-Difference in means for each country, divided by gender
-
+```{r}
+plot(anova_results, which = 2)
+```
 
 
 
