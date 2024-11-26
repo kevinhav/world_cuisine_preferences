@@ -6,7 +6,7 @@ output: pdf_document
 
 ### Data Preparation
 
-Our data comes from [FiveThirtyEight's International Food Association's 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/). Food World Cup survey in 2014. The data contains survey responses of U.S. adults, asking them about their general familiarity and preference for the native foods from different countries. Each respondent rated each country's native food based on how much they enjoy it. Respondents also provided some demographic information on themselves.
+Our data comes from [FiveThirtyEight's International Food Association's 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/) Food World Cup survey in 2014. The data contains survey responses of U.S. adults, asking them about their general familiarity and preference for the native foods from different countries. Each respondent rated each country's native food based on how much they enjoy it. Respondents also provided some demographic information on themselves.
 
 ```{r setup, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 source("load_data.R")
