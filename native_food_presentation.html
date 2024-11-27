@@ -427,10 +427,10 @@ Kevin Havis
 <li>If so, do any particular countries stand out?</li>
 <li>Do other socioeconomic factors have any affect?</li>
 </ul>
-<p>We’d like to understand these factors so we can finally answer question asked time and time again;</p>
+<p>We’d like to understand these factors so we can finally answer the question asked time and time again;</p>
 <div class="fragment">
 <div class="r-fit-text">
-<p><em>What do we want to eat for dinner tonight?</em></p>
+<p><em>“What do you want for dinner tonight?”</em></p>
 </div>
 </div>
 </section>
@@ -483,8 +483,8 @@ Kevin Havis
 </tbody>
 </table>
 </section>
-<section id="overview-of-national-food-preferences" class="slide level2">
-<h2>Overview of national food preferences</h2>
+<section class="slide level2">
+
 
 <img data-src="native_food_presentation_files/imgs/rating_by_gender_country.png" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="distribution-of-ratings-by-gender" class="slide level2">
@@ -535,15 +535,15 @@ Kevin Havis
 <h2>Interaction effect of gender and country</h2>
 <ul>
 <li><p><em>Do men and women have the same preferences in cuisine?</em></p></li>
-<li><p>We answer this question by considering the p-value, or significance, of the interaction effect</p></li>
-<li><p><strong>Interaction Effect</strong>: The incremental effect two independent variables (<code>gender</code> &amp; <code>country</code>) have on an independent variable (<code>rating</code>) when considered collectively</p></li>
+<li><p>We answer this question by considering the p-value of the interaction effect</p></li>
+<li><p><strong>Interaction Effect</strong>: The incremental effect two independent variables (<code>gender</code> &amp; <code>country</code>) have on a dependent variable (<code>rating</code>) when considered collectively</p></li>
 <li><p>We can evaluate this using a multiple linear regression with interaction</p></li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Multiple linear regression</span></span>
 <span id="cb2-2"><a href=""></a>gen_country_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(rating <span class="sc">~</span> gender <span class="sc">*</span> country, <span class="at">data=</span>long_data)</span>
 <span id="cb2-3"><a href=""></a><span class="fu">summary</span>(gen_country_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>While we do find some interesting observations to explore, we should note this model explains a small percentage of the overall variance given our adjusted of <span class="math inline">\(R^2 = 0.13\)</span></li>
+<li>While we do find some interesting observations to explore, we should note this model explains a small percentage of the overall variance given our <span class="math inline">\(R_{adj}^2 = 0.13\)</span></li>
 </ul>
 <pre><code>Residual standard error: 0.8808 on 23229 degrees of freedom
 Multiple R-squared:  0.1329,    Adjusted R-squared:  0.1299 
@@ -567,11 +567,11 @@ F-statistic: 45.06 on 79 and 23229 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>I found two countries where the mean rating differs enough considering gender (<span class="math inline">\(pvalue&lt;\alpha\)</span>); China and Australia, which are rated more highly by men.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 35%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
+<col style="width: 27%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 18%">
 </colgroup>
 <thead>
 <tr class="header">

@@ -7,42 +7,40 @@ theme: moon
 
 ## Abstract
 
-In this analysis I explore the relationship between U.S. Adults preferences for cuisine from different countries to their socioeconomic characteristics, primarily gender. Using student's t-test and linear regression, I conclude that gender, along with education, world cuisine interest, and education, generally play a small but statistically significant role in predicting preferences.
+In this analysis I explore the relationship between U.S. adults' preferences for cuisine from different countries to their socioeconomic characteristics, primarily gender. Using student's t-test and linear regression, I conclude that gender, along with education, world cuisine interest, and education, generally play a small but statistically significant role in predicting preferences.
 
 ## Introduction {.smaller}
 
 **Our questions**;
 
-::: {.notes}
+::: notes
 Anecdote about friend's debate; men like pizza and women like sushi
-::: 
-
-- Do men and women have the same preferences in cuisine?
-- If so, do any particular countries stand out?
-- Do other socioeconomic factors have any affect?
-
-We'd like to understand these factors so we can finally answer question asked time and time again;
-
-:::: {.fragment}
-
-::: {.r-fit-text}
-*What do we want to eat for dinner tonight?*
 :::
 
+-   Do men and women have the same preferences in cuisine?
+-   If so, do any particular countries stand out?
+-   Do other socioeconomic factors have any affect?
+
+We'd like to understand these factors so we can finally answer the question asked time and time again;
+
+:::: fragment
+::: r-fit-text
+*"What do you want for dinner tonight?"*
+:::
 ::::
 
 ## The data
 
-- Our data comes from [FiveThirtyEight's International Food Association's 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/) Food World Cup survey conducted in 2014.
+-   Our data comes from [FiveThirtyEight's International Food Association's 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/) Food World Cup survey conducted in 2014.
 
-- The data has 1,373 responses where participants rate how much they like a given country's food. Other information about the respondents are also available, including gender, world cuisine knowledge, education, age, and income.
+-   The data has 1,373 responses where participants rate how much they like a given country's food. Other information about the respondents are also available, including gender, world cuisine knowledge, education, age, and income.
 
-- Note that null values were removed for this analysis
+-   Note that null values were removed for this analysis
 
 ## Survey Rating Guidelines {.smaller}
 
 | Value | Description |
-|----|----|
+|------------------------------------|------------------------------------|
 | 5 | I love this country's traditional cuisine. I think it's one of the best in the world. |
 | 4 | I like this country's traditional cuisine. I think it's considerably above average. |
 | 3 | I'm OK with this county's traditional cuisine. I think it's about average. |
@@ -50,37 +48,25 @@ We'd like to understand these factors so we can finally answer question asked ti
 | 1 | I hate this country's traditional cuisine. I think it's one of the worst in the world. |
 | N/A | I'm unfamiliar with this country's traditional cuisine. |
 
-
-## Overview of national food preferences
+------------------------------------------------------------------------
 
 ![](native_food_presentation_files/imgs/rating_by_gender_country.png){fig-align="center"}
 
-
-
 ## Distribution of ratings by gender
 
-
-
 ![](native_food_presentation_files/imgs/rating_gender_distrib.png)
-
 
 ## Is there a difference? {.smaller}
 
 To see if gender has an effect on rating, we can compare means with a t-test
 
- - $H_0 | \alpha=0.05$: There is *no* difference in mean rating between genders
- - $H_A | \alpha=0.05$: There is a difference in mean rating between genders
+-   $H_0$: There is *no* difference in mean rating between genders
+-   $H_A$: There is a difference in mean rating between genders
 
-::::: {.columns}
-
+::::::: columns
 :::: {.column width="50%"}
-
-:::{.fragment}
-
-
-
-
-```{.r}
+::: fragment
+``` r
 # Calculate observed difference in means    
 obs_diff <- long_data |> 
   specify(rating ~ gender) |> 
@@ -102,99 +88,86 @@ null_dist |>
   
 ```
 :::
-
 ::::
 
 :::: {.column width="50%"}
-
-::: {.fragment}
-
-
+::: fragment
 ![](native_food_presentation_files/imgs/null_dist.png)
 :::
-
 ::::
+:::::::
 
-:::::
-
-::: {.fragment}
-We can conclude that there is generally a small but statistically significant rating between genders. 
+::: fragment
+We can conclude that there is generally a small but statistically significant rating between genders.
 
 Given our p-value, we fail to reject the null hypothesis.
-
 :::
 
 ## Interaction effect of gender and country {.smaller}
 
-- *Do men and women have the same preferences in cuisine?*
+-   *Do men and women have the same preferences in cuisine?*
 
-- We answer this question by considering the p-value, or significance, of the interaction effect
+-   We answer this question by considering the p-value of the interaction effect
 
-- **Interaction Effect**: The incremental effect two independent variables (`gender` & `country`) have on an independent variable (`rating`) when considered collectively
+-   **Interaction Effect**: The incremental effect two independent variables (`gender` & `country`) have on a dependent variable (`rating`) when considered collectively
 
-- We can evaluate this using a multiple linear regression with interaction
+-   We can evaluate this using a multiple linear regression with interaction
 
-```{.r}
+``` r
 # Multiple linear regression
 gen_country_model <- lm(rating ~ gender * country, data=long_data)
 summary(gen_country_model)
 ```
 
-- While we do find some interesting observations to explore, we should note this model explains a small percentage of the overall variance given our adjusted of $R^2 = 0.13$
+-   While we do find some interesting observations to explore, we should note this model explains a small percentage of the overall variance given our $R_{adj}^2 = 0.13$
 
-```
+```         
 Residual standard error: 0.8808 on 23229 degrees of freedom
-Multiple R-squared:  0.1329,	Adjusted R-squared:  0.1299 
+Multiple R-squared:  0.1329,    Adjusted R-squared:  0.1299 
 F-statistic: 45.06 on 79 and 23229 DF,  p-value: < 2.2e-16
 ```
 
 ## Model Observations {.smaller}
 
-::: {.notes}
+::: notes
 Australia's national dish is roasted lamb
 :::
 
 I found two countries where the mean rating differs enough considering gender ($pvalue<\alpha$); China and Australia, which are rated more highly by men.
 
-
-| term                     | estimate   | std.error  | statistic  | p.value    |
-|--------------------------|------------|------------|------------|------------|
-| genderMale:countryaustralia | 0.3141801 | 0.1541885 | 2.037636   | **0.04159765** |
-| genderMale:countrychina     | 0.3298832 | 0.1413940 | 2.333077   | **0.01965260** |
-
+| term                        | estimate  | std.error | statistic | p.value        |
+|--------------------|-------------|-------------|-------------|-------------|
+| genderMale:countryaustralia | 0.3141801 | 0.1541885 | 2.037636  | **0.04159765** |
+| genderMale:countrychina     | 0.3298832 | 0.1413940 | 2.333077  | **0.01965260** |
 
 As a country, China recognizes 8 distinct regional cuisine styles, however its food is commonly misrepresented in the United States. I considered this a potential reason for this difference, but did not find any correlation between China's rating and respondents' knowledge of cuisines[^1].
 
-Australia also had no convincing relationships to speak of with other dimensions of the data.
-
 [^1]: Interest in world cuisines was positively correlated with Chinese food rating and could be considered a proxy
+
+Australia also had no convincing relationships to speak of with other dimensions of the data.
 
 ## Other factors
 
-- *Education* can play a role; the least educated respondents were more generous in their ratings
+-   *Education* can play a role; the least educated respondents were more generous in their ratings
 
-- *Income* was similar to education, although a substantial amount of this data was missing
+-   *Income* was similar to education, although a substantial amount of this data was missing
 
-- *Knowledge of world cuisines* unsurprisingly was statistically significant, although a relatively small effect size
+-   *Knowledge of world cuisines* unsurprisingly was statistically significant, although a relatively small effect size
 
-- *Interest in world cuisines* had by far the largest coefficient
+-   *Interest in world cuisines* had by far the largest coefficient
 
 ## Conclusion {.smaller}
 
-::: {.notes}
+::: notes
 The linear model always predicted Italy as highest rated food
 :::
 
 This analysis is based on observational data which is very likely biased, which limits the generality of these conclusions.
 
-- The wording of the survey responses may have skewed the distribution of ratings
+-   The wording of the survey responses may have skewed the distribution of ratings
 
-- Socioeconomic factors play a part in people's cuisine preferences, but overall explains very little of the overall rating
+-   Socioeconomic factors play a part in people's cuisine preferences, but overall explains very little of the overall rating
 
-- Ratings are slightly different by rating, but we only see two countries where there is a meaningful difference (Australia and China)
+-   Ratings are slightly different by rating, but we only see two countries where there is a meaningful difference (Australia and China)
 
-- Respondent's interest in cuisine was the best predictor of overall score; if you love food, you love *all* food
-
-
-
-
+-   Respondent's interest in cuisine was the best predictor of overall score; if you love food, you love *all* food
