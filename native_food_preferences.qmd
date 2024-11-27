@@ -297,8 +297,5 @@ aus_lm <- lm(rating ~ education + knowledge_cuisines + interest_cuisines, data=a
 summary(aus_lm)
 ```
 
-aus_lm <- lm(rating ~ education + knowledge_cuisines + interest_cuisines, data=aus_data)
-
-summary(aus_lm)
 
 ## Conclusion
