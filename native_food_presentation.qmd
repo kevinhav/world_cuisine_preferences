@@ -100,7 +100,7 @@ null_dist |>
 ::: fragment
 We can conclude that there is generally a small but statistically significant rating between genders.
 
-Given our p-value, we fail to reject the null hypothesis.
+Given our p-value, we reject the null hypothesis.
 :::
 
 ## Interaction effect of gender and country {.smaller}
