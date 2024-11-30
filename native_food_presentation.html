@@ -482,8 +482,8 @@ Kevin Havis
       }</style></aside>
 <table class="caption-top">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 7%">
+<col style="width: 92%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -562,24 +562,6 @@ Kevin Havis
 <img data-src="native_food_presentation_files/imgs/rating_gender_distrib.png" class="r-stretch"></section>
 <section id="is-there-a-difference" class="slide level2 smaller">
 <h2>Is there a difference?</h2>
-<aside class="notes">
-<ul>
-<li>We set up our hypothesis as such</li>
-<li>Calculate the observed difference, then the null distribution</li>
-<li>We can see the p-value is near zero for our t-score, so we reject the null hypothesis; there is a meaningful difference between men and women’s average ratings</li>
-<li>Up till now we’ve only looked at average rating by gender, but we want to know if there is a specific country that women prefer, or vice verse</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 <p>To see if gender has an effect on rating, we can compare means with a t-test</p>
 <ul>
 <li><span class="math inline">\(H_0\)</span>: There is <em>no</em> difference in mean rating between genders</li>
@@ -616,6 +598,8 @@ Kevin Havis
 <div class="fragment">
 <p>We can conclude that there is generally a small but statistically significant rating between genders.</p>
 <p>Given our p-value, we reject the null hypothesis.</p>
+</div>
+</section>
 <section id="interaction-effect-of-gender-and-country" class="slide level2 smaller">
 <h2>Interaction effect of gender and country</h2>
 <aside class="notes">
@@ -707,7 +691,7 @@ F-statistic: 45.06 on 79 and 23229 DF,  p-value: &lt; 2.2e-16</code></pre>
 </table>
 <p>As a country, China recognizes 8 distinct regional cuisine styles, however its food is commonly misrepresented in the United States. I considered this a potential reason for this difference, but did not find any correlation between China’s rating and respondents’ knowledge of cuisines<sup>1</sup>.</p>
 <p>Australia also had no convincing relationships to speak of with other dimensions of the data.</p>
-</section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Interest in world cuisines was positively correlated with Chinese food rating and could be considered a proxy</p></li></ol></aside></section>
 <section id="other-factors" class="slide level2">
 <h2>Other factors</h2>
 <ul>
@@ -745,8 +729,6 @@ F-statistic: 45.06 on 79 and 23229 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-</div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Interest in world cuisines was positively correlated with Chinese food rating and could be considered a proxy</p></li></ol></aside></section>
 
     </div>
   </div>

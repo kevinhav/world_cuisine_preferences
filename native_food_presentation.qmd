@@ -24,7 +24,7 @@ In this analysis I explore the relationship between U.S. adults' preferences for
 
 We'd like to understand these factors so we can finally answer the question asked time and time again;
 
-:::: fragment
+:::: {.fragment}
 ::: r-fit-text
 *"What do you want for dinner tonight?"*
 :::
@@ -52,7 +52,7 @@ We'd like to understand these factors so we can finally answer the question aske
 :::
 
 | Value | Description |
-|------------------------------------|------------------------------------|
+|---|------------------------------------|
 | 5 | I love this country's traditional cuisine. I think it's one of the best in the world. |
 | 4 | I like this country's traditional cuisine. I think it's considerably above average. |
 | 3 | I'm OK with this county's traditional cuisine. I think it's about average. |
@@ -82,21 +82,15 @@ We'd like to understand these factors so we can finally answer the question aske
 
 ## Is there a difference? {.smaller}
 
-:::{.notes}
-- We set up our hypothesis as such
-- Calculate the observed difference, then the null distribution
-- We can see the p-value is near zero for our t-score, so we reject the null hypothesis; there is a meaningful difference between men and women's average ratings
-- Up till now we've only looked at average rating by gender, but we want to know if there is a specific country that women prefer, or vice verse
-:::
-
 To see if gender has an effect on rating, we can compare means with a t-test
 
 -   $H_0$: There is *no* difference in mean rating between genders
 -   $H_A$: There is a difference in mean rating between genders
 
-::::::: columns
+
+::::::: {.columns}
 :::: {.column width="50%"}
-::: fragment
+::: {.fragment}
 ``` r
 # Calculate observed difference in means    
 obs_diff <- long_data |> 
@@ -122,16 +116,17 @@ null_dist |>
 ::::
 
 :::: {.column width="50%"}
-::: fragment
+::: {.fragment}
 ![](native_food_presentation_files/imgs/null_dist.png)
 :::
 ::::
 :::::::
 
-::: fragment
+::: {.fragment}
 We can conclude that there is generally a small but statistically significant rating between genders.
 
 Given our p-value, we reject the null hypothesis.
+:::
 
 ## Interaction effect of gender and country {.smaller}
 
@@ -165,7 +160,7 @@ F-statistic: 45.06 on 79 and 23229 DF,  p-value: < 2.2e-16
 
 ## Model Observations {.smaller}
 
-::: notes
+::: {.notes}
 - There are only two countries where the interaction effect had a p-value less than 0.05
 - Chinese American food is often confused for authentic Chinese food, so I thought to look at knowledge of cuisines to see if people more familiar with world cuisines were picking up on that distinction.
 - I did not see any significance when checking China's ratings against knowledge of cuisines, but I did see some with interest in world cuisines. It is tough to say if this is really a contribution.
@@ -197,7 +192,7 @@ Australia also had no convincing relationships to speak of with other dimensions
 
 ## Conclusion {.smaller}
 
-::: notes
+::: {.notes}
 The linear model always predicted Italy as highest rated food
 :::
 
