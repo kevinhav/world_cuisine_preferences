@@ -13,13 +13,14 @@ In this analysis I explore the relationship between U.S. adults' preferences for
 
 **Our questions**;
 
-::: notes
-Anecdote about friend's debate; men like pizza and women like sushi
+::: {.notes}
+- Anecdote: Significant other likes sushi, I like pizza
+- Thought I'd put my new skills to practical use
 :::
 
 -   Do men and women have the same preferences in cuisine?
--   If so, do any particular countries stand out?
--   Do other socioeconomic factors have any affect?
+-   Do any particular countries stand out?
+-   Do other socioeconomic factors have any affect, and can we use them to predict preferences?
 
 We'd like to understand these factors so we can finally answer the question asked time and time again;
 
@@ -31,6 +32,11 @@ We'd like to understand these factors so we can finally answer the question aske
 
 ## The data
 
+::: {.notes}
+- Independent observations, but observational study - generalizeable but has bias and not causal
+- We ignored nulls, including gender, as not clear reason for nulls
+:::
+
 -   Our data comes from [FiveThirtyEight's International Food Association's 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/) Food World Cup survey conducted in 2014.
 
 -   The data has 1,373 responses where participants rate how much they like a given country's food. Other information about the respondents are also available, including gender, world cuisine knowledge, education, age, and income.
@@ -38,6 +44,12 @@ We'd like to understand these factors so we can finally answer the question aske
 -   Note that null values were removed for this analysis
 
 ## Survey Rating Guidelines {.smaller}
+
+::: {.notes}
+- Survey questions should be decoupled; should not ask for both preference and "world standing"
+- We'll see how this wording affects the results
+- Similar ranking and rating for interest and knowledge of food
+:::
 
 | Value | Description |
 |------------------------------------|------------------------------------|
@@ -50,13 +62,32 @@ We'd like to understand these factors so we can finally answer the question aske
 
 ------------------------------------------------------------------------
 
+::: {.notes}
+- Plot show us distribution of ratings
+- Note the higher skew of 3-5
+- See some clear trends and observations, but let's look at the male / female breakdown more closely
+:::
+
 ![](native_food_presentation_files/imgs/rating_by_gender_country.png){fig-align="center"}
 
 ## Distribution of ratings by gender
 
+::: {.notes}
+- We can see the skew very clearly here, although the ratings are still approximately normal.
+- It looks like women tend to rate food higher on average than men, but we can perform a t-test on the difference between mean ratings to check
+:::
+
+
 ![](native_food_presentation_files/imgs/rating_gender_distrib.png)
 
 ## Is there a difference? {.smaller}
+
+:::{.notes}
+- We set up our hypothesis as such
+- Calculate the observed difference, then the null distribution
+- We can see the p-value is near zero for our t-score, so we reject the null hypothesis; there is a meaningful difference between men and women's average ratings
+- Up till now we've only looked at average rating by gender, but we want to know if there is a specific country that women prefer, or vice verse
+:::
 
 To see if gender has an effect on rating, we can compare means with a t-test
 
@@ -101,9 +132,14 @@ null_dist |>
 We can conclude that there is generally a small but statistically significant rating between genders.
 
 Given our p-value, we reject the null hypothesis.
-:::
 
 ## Interaction effect of gender and country {.smaller}
+
+::: {.notes}
+- To test this, we will set up a multiple linear regression and examine the interaction effect between country and gender as it relates to rating
+- This problem could also be framed as ANOVA
+- By looking at the interaction effect, we are putting aside the known differences due to gender and country, and examine just the impact of the relationship
+:::
 
 -   *Do men and women have the same preferences in cuisine?*
 
@@ -130,6 +166,9 @@ F-statistic: 45.06 on 79 and 23229 DF,  p-value: < 2.2e-16
 ## Model Observations {.smaller}
 
 ::: notes
+- There are only two countries where the interaction effect had a p-value less than 0.05
+- Chinese American food is often confused for authentic Chinese food, so I thought to look at knowledge of cuisines to see if people more familiar with world cuisines were picking up on that distinction.
+- I did not see any significance when checking China's ratings against knowledge of cuisines, but I did see some with interest in world cuisines. It is tough to say if this is really a contribution.
 Australia's national dish is roasted lamb
 :::
 
