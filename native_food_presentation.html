@@ -410,7 +410,10 @@ Kevin Havis
 <h2>Introduction</h2>
 <p><strong>Our questions</strong>;</p>
 <aside class="notes">
-<p>Anecdote about friend’s debate; men like pizza and women like sushi</p>
+<ul>
+<li>Anecdote: Significant other likes sushi, I like pizza</li>
+<li>Thought I’d put my new skills to practical use</li>
+</ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -436,6 +439,22 @@ Kevin Havis
 </section>
 <section id="the-data" class="slide level2">
 <h2>The data</h2>
+<aside class="notes">
+<ul>
+<li>Independent observations, but observational study - generalizeable but has bias and not causal</li>
+<li>We ignored nulls, including gender, as not clear reason for nulls</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <ul>
 <li><p>Our data comes from <a href="https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/">FiveThirtyEight’s International Food Association’s 2014 World Cup</a> Food World Cup survey conducted in 2014.</p></li>
 <li><p>The data has 1,373 responses where participants rate how much they like a given country’s food. Other information about the respondents are also available, including gender, world cuisine knowledge, education, age, and income.</p></li>
@@ -444,6 +463,23 @@ Kevin Havis
 </section>
 <section id="survey-rating-guidelines" class="slide level2 smaller">
 <h2>Survey Rating Guidelines</h2>
+<aside class="notes">
+<ul>
+<li>Survey questions should be decoupled; should not ask for both preference and “world standing”</li>
+<li>We’ll see how this wording affects the results</li>
+<li>Similar ranking and rating for interest and knowledge of food</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -485,14 +521,65 @@ Kevin Havis
 </section>
 <section class="slide level2">
 
+<aside class="notes">
+<ul>
+<li>Plot show us distribution of ratings</li>
+<li>Note the higher skew of 3-5</li>
+<li>See some clear trends and observations, but let’s look at the male / female breakdown more closely</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 <img data-src="native_food_presentation_files/imgs/rating_by_gender_country.png" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="distribution-of-ratings-by-gender" class="slide level2">
 <h2>Distribution of ratings by gender</h2>
+<aside class="notes">
+<ul>
+<li>We can see the skew very clearly here, although the ratings are still approximately normal.</li>
+<li>It looks like women tend to rate food higher on average than men, but we can perform a t-test on the difference between mean ratings to check</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 <img data-src="native_food_presentation_files/imgs/rating_gender_distrib.png" class="r-stretch"></section>
 <section id="is-there-a-difference" class="slide level2 smaller">
 <h2>Is there a difference?</h2>
+<aside class="notes">
+<ul>
+<li>We set up our hypothesis as such</li>
+<li>Calculate the observed difference, then the null distribution</li>
+<li>We can see the p-value is near zero for our t-score, so we reject the null hypothesis; there is a meaningful difference between men and women’s average ratings</li>
+<li>Up till now we’ve only looked at average rating by gender, but we want to know if there is a specific country that women prefer, or vice verse</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <p>To see if gender has an effect on rating, we can compare means with a t-test</p>
 <ul>
 <li><span class="math inline">\(H_0\)</span>: There is <em>no</em> difference in mean rating between genders</li>
@@ -529,10 +616,25 @@ Kevin Havis
 <div class="fragment">
 <p>We can conclude that there is generally a small but statistically significant rating between genders.</p>
 <p>Given our p-value, we reject the null hypothesis.</p>
-</div>
-</section>
 <section id="interaction-effect-of-gender-and-country" class="slide level2 smaller">
 <h2>Interaction effect of gender and country</h2>
+<aside class="notes">
+<ul>
+<li>To test this, we will set up a multiple linear regression and examine the interaction effect between country and gender as it relates to rating</li>
+<li>This problem could also be framed as ANOVA</li>
+<li>By looking at the interaction effect, we are putting aside the known differences due to gender and country, and examine just the impact of the relationship</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <ul>
 <li><p><em>Do men and women have the same preferences in cuisine?</em></p></li>
 <li><p>We answer this question by considering the p-value of the interaction effect</p></li>
@@ -552,7 +654,11 @@ F-statistic: 45.06 on 79 and 23229 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="model-observations" class="slide level2 smaller">
 <h2>Model Observations</h2>
 <aside class="notes">
-<p>Australia’s national dish is roasted lamb</p>
+<ul>
+<li>There are only two countries where the interaction effect had a p-value less than 0.05</li>
+<li>Chinese American food is often confused for authentic Chinese food, so I thought to look at knowledge of cuisines to see if people more familiar with world cuisines were picking up on that distinction.</li>
+<li>I did not see any significance when checking China’s ratings against knowledge of cuisines, but I did see some with interest in world cuisines. It is tough to say if this is really a contribution. Australia’s national dish is roasted lamb</li>
+</ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -601,7 +707,7 @@ F-statistic: 45.06 on 79 and 23229 DF,  p-value: &lt; 2.2e-16</code></pre>
 </table>
 <p>As a country, China recognizes 8 distinct regional cuisine styles, however its food is commonly misrepresented in the United States. I considered this a potential reason for this difference, but did not find any correlation between China’s rating and respondents’ knowledge of cuisines<sup>1</sup>.</p>
 <p>Australia also had no convincing relationships to speak of with other dimensions of the data.</p>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Interest in world cuisines was positively correlated with Chinese food rating and could be considered a proxy</p></li></ol></aside></section>
+</section>
 <section id="other-factors" class="slide level2">
 <h2>Other factors</h2>
 <ul>
@@ -639,6 +745,8 @@ F-statistic: 45.06 on 79 and 23229 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Interest in world cuisines was positively correlated with Chinese food rating and could be considered a proxy</p></li></ol></aside></section>
 
     </div>
   </div>
